@@ -2,8 +2,11 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping("student")
@@ -21,18 +24,18 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity getStudentsOfSpecificAge(@RequestParam("age") Integer age,
-                                                   @RequestParam(name = "to", required = false) Integer to) {
+    public Collection<Student> getStudentsOfSpecificAge(@RequestParam("age") Integer age,
+                                               @RequestParam(name = "to", required = false) Integer to) {
         if (to == null) {
-            return ResponseEntity.ok(studentService.getAllStudentsOfSpecificAge(age));
+            return studentService.getAllStudentsOfSpecificAge(age);
         }
-        return ResponseEntity.ok(studentService.getAllStudentsOfSpecificAge(age, to));
+        return studentService.getAllStudentsOfSpecificAge(age, to);
 
     }
 
     @GetMapping("{id}/faculty")
-    public ResponseEntity getFacultyOfStudent(@PathVariable Long id){
-        return ResponseEntity.ok(studentService.getFacultyOfStudent(id));
+    public Faculty getFacultyOfStudent(@PathVariable Long id){
+        return studentService.getFacultyOfStudent(id);
     }
 
     @PostMapping
@@ -41,12 +44,12 @@ public class StudentController {
     }
 
     @PutMapping
-    public Student editeStudent(@RequestBody Student student) {
+    public Student editStudent(@RequestBody Student student) {
         return studentService.editStudent(student);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity removeStudent(@PathVariable Long id) {
+    public ResponseEntity<Student> removeStudent(@PathVariable Long id) {
         studentService.removeStudent(id);
         return ResponseEntity.ok().build();
     }
