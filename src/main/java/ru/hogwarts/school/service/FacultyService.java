@@ -7,7 +7,6 @@ import ru.hogwarts.school.repository.FacultyRepository;
 
 
 import java.util.Collection;
-import java.util.List;
 
 @Service
 public class FacultyService {
