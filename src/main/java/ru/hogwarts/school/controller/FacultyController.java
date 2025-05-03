@@ -24,8 +24,8 @@ public class FacultyController {
     }
 
     @GetMapping
-    public Collection<Faculty> getFacultiesOfSpecificColor(@RequestParam(required = false) String color,
-                                                      @RequestParam(required = false) String name){
+    public Collection<Faculty> getFaculties(@RequestParam(required = false) String color,
+                                            @RequestParam(required = false) String name){
         if (color != null && !color.isBlank()) {
             return facultyService.getFacultiesOfSpecificColor(color);
         }

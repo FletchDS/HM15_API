@@ -1,8 +1,6 @@
 package ru.hogwarts.school.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +15,6 @@ import java.nio.file.Path;
 @RequestMapping("avatar")
 public class AvatarController {
 
-    private static final Logger log = LoggerFactory.getLogger(AvatarController.class);
     private final AvatarService avatarService;
 
     public AvatarController(AvatarService avatarService) {

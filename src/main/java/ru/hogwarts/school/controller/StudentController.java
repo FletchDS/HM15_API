@@ -24,17 +24,21 @@ public class StudentController {
     }
 
     @GetMapping
-    public Collection<Student> getStudentsOfSpecificAge(@RequestParam("age") Integer age,
-                                               @RequestParam(name = "to", required = false) Integer to) {
-        if (to == null) {
+    public Collection<Student> getStudents(
+            @RequestParam(name = "age", required = false) Integer age,
+            @RequestParam(name = "to", required = false) Integer to) {
+        if (age != null && to != null) {
+            return studentService.getAllStudentsOfSpecificAge(age, to);
+        }
+        if (age != null) {
             return studentService.getAllStudentsOfSpecificAge(age);
         }
-        return studentService.getAllStudentsOfSpecificAge(age, to);
+        return studentService.geAllStudents();
 
     }
 
     @GetMapping("{id}/faculty")
-    public Faculty getFacultyOfStudent(@PathVariable Long id){
+    public Faculty getFacultyOfStudent(@PathVariable Long id) {
         return studentService.getFacultyOfStudent(id);
     }
 
