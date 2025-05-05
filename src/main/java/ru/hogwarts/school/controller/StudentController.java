@@ -2,6 +2,7 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
@@ -18,27 +19,41 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public Student getStudent(@PathVariable Long id){
+    public Student getStudent(@PathVariable Long id) {
         return studentService.getStudent(id);
     }
 
     @GetMapping
-    public Collection<Student> getStudentsOfSpecificAge(@RequestParam("age") int age){
-        return studentService.getAllStudentsOfSpecificAge(age);
+    public Collection<Student> getStudents(
+            @RequestParam(name = "age", required = false) Integer age,
+            @RequestParam(name = "to", required = false) Integer to) {
+        if (age != null && to != null) {
+            return studentService.getAllStudentsOfSpecificAge(age, to);
+        }
+        if (age != null) {
+            return studentService.getAllStudentsOfSpecificAge(age);
+        }
+        return studentService.geAllStudents();
+
+    }
+
+    @GetMapping("{id}/faculty")
+    public Faculty getFacultyOfStudent(@PathVariable Long id) {
+        return studentService.getFacultyOfStudent(id);
     }
 
     @PostMapping
-    public Student addStudent(@RequestBody Student student){
+    public Student addStudent(@RequestBody Student student) {
         return studentService.addStudent(student);
     }
 
     @PutMapping
-    public Student editeStudent(@RequestBody Student student){
+    public Student editStudent(@RequestBody Student student) {
         return studentService.editStudent(student);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity removeStudent(@PathVariable Long id){
+    public ResponseEntity<Student> removeStudent(@PathVariable Long id) {
         studentService.removeStudent(id);
         return ResponseEntity.ok().build();
     }

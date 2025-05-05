@@ -24,8 +24,20 @@ public class FacultyController {
     }
 
     @GetMapping
-    public Collection<Faculty> getFacultiesOfSpecificColor(@RequestParam String color){
-        return facultyService.getFacultiesOfSpecificColor(color);
+    public Collection<Faculty> getFaculties(@RequestParam(required = false) String color,
+                                            @RequestParam(required = false) String name){
+        if (color != null && !color.isBlank()) {
+            return facultyService.getFacultiesOfSpecificColor(color);
+        }
+        if (name != null && !name.isBlank()) {
+            return facultyService.getFacultiesByName(name);
+        }
+        return facultyService.getAllFaculties();
+    }
+
+    @GetMapping("{id}/students")
+    public Collection<Student> getStudentsOfFaculty(@PathVariable Long id){
+        return facultyService.getStudentsOfFaculty(id);
     }
 
     @PostMapping
@@ -39,7 +51,7 @@ public class FacultyController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity removeFaculty(@PathVariable Long id){
+    public ResponseEntity<Faculty> removeFaculty(@PathVariable Long id){
         facultyService.removeFaculty(id);
         return ResponseEntity.ok().build();
     }
