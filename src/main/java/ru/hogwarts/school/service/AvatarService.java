@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
@@ -18,11 +19,11 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 @Service
 public class AvatarService {
 
-    private static final Logger log = LoggerFactory.getLogger(AvatarService.class);
     @Value("${school.students.avatar.dir.path}")
     private String avatarsDir;
 
@@ -86,5 +87,14 @@ public class AvatarService {
             ImageIO.write(avatarImage, getExtension(getExtension(path.getFileName().toString())), baos);
             return baos.toByteArray();
         }
+    }
+
+    public List<Avatar> findAvatars() {
+        return avatarRepository.findAll();
+    }
+
+    public List<Avatar> findAvatars(Integer pageNumber, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
+        return avatarRepository.findAll(pageRequest).getContent();
     }
 }
