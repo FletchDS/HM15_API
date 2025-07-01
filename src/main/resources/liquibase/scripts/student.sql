@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset vitaliy:1
+-- changeset vitaliy:3
 CREATE TABLE student(
     id SERIAL,
 	age INT,
@@ -10,5 +10,5 @@ CREATE TABLE student(
     FOREIGN KEY (faculty_id) REFERENCES faculty(id)
 )
 
--- changeset vitaliy:2
+-- changeset vitaliy:4
 CREATE INDEX student_name_index ON student(name)

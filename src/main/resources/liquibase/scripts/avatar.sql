@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset vitaliy:1
+-- changeset vitaliy:5
 CREATE TABLE avatar(
     id SERIAL,
 	file_path VARCHAR(255),
