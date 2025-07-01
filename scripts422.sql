@@ -1,0 +1,19 @@
+CREATE TABLE mark (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255) UNIQUE
+);
+
+CREATE TABLE car (
+	id SERIAL PRIMARY KEY,
+	model VARCHAR(255) UNIQUE,
+	price NUMERIC,
+	mark_id INTEGER REFERENCES mark (id)
+);
+
+CREATE TABLE client (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255),
+	age SMALLINT CHECK(age > 0),
+	drive_license BOOLEAN DEFAULT ('no'),
+	car_id INTEGER REFERENCES car (id)
+);
