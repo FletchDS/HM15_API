@@ -15,7 +15,6 @@ public class Avatar {
     private long fileSize;
     private String mediaType;
 
-    @Lob
     @Column(name = "data", columnDefinition = "bytea")
     private byte[] data;
 
