@@ -9,6 +9,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class StudentService {
@@ -52,6 +53,17 @@ public class StudentService {
         return studentRepository.findByAgeBetween(from, to);
     }
 
+    public Collection<String> getStudentsNamesWithSpecifiedBeginning() {
+        logger.debug("Method getStudentsWhichNameStartsWithA was called");
+        List<Student> Students = studentRepository.findAll();
+        return Students.stream()
+                .filter(Objects::nonNull)
+                .map(Student::getName)
+                .filter(name -> name.startsWith("A"))
+                .sorted((o1, o2) -> o1.compareTo(o2))
+                .toList();
+    }
+
     public Collection<Student> geAllStudents() {
         logger.debug("Method geAllStudents was called");
         return studentRepository.findAll();
@@ -69,7 +81,11 @@ public class StudentService {
 
     public Double getAverageAgeOfStudents() {
         logger.debug("Method getAverageAgeOfStudents was called");
-        return studentRepository.findAverageAgeOfStudents();
+        return studentRepository.findAll().stream()
+                .filter(Objects::nonNull)
+                .mapToDouble(Student::getAge)
+                .average()
+                .getAsDouble();
     }
 
     public List<Student> getLastFiveStudents() {

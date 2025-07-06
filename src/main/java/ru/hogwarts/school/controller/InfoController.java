@@ -19,4 +19,9 @@ public class InfoController {
     public int getPort(){
         return infoService.getPort();
     }
+
+    @GetMapping("/formula")
+    public Long getResultOfFormula(){
+        return infoService.getResultOfFormula();
+    }
 }

@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.LongStream;
+
 
 @Service
 public class InfoService {
@@ -18,8 +20,16 @@ public class InfoService {
 
     }
 
-    public int getPort(){
+    public int getPort() {
         logger.debug("Method getPort was called");
         return port;
+    }
+
+    public Long getResultOfFormula() {
+        logger.debug("Method getResultOfFormula was called");
+        return LongStream
+                .rangeClosed(1, 1_000_000)
+                .parallel()
+                .sum();
     }
 }
