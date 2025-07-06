@@ -30,12 +30,16 @@ public class AvatarService {
     private AvatarRepository avatarRepository;
     private StudentRepository studentRepository;
 
+    private Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     public AvatarService(AvatarRepository avatarRepository, StudentRepository studentService) {
+        logger.debug("Constructor AvatarService was called");
         this.avatarRepository = avatarRepository;
         this.studentRepository = studentService;
     }
 
     public void editAvatar(Long studentId, MultipartFile file) throws IOException {
+        logger.debug("Method editAvatar was called with studentId = {}", studentId);
         Student student = studentRepository.findById(studentId).get();
 
         Path path = Path.of(avatarsDir, student + "." + getExtension(file.getOriginalFilename()));
@@ -63,15 +67,18 @@ public class AvatarService {
 
     @Transactional
     public Avatar findAvatar(Long studentId){
+        logger.debug("Method findAvatar was called with studentId = {} ", studentId);
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     private String getExtension(String originalFilename) {
+        logger.debug("Method getExtension was called with originalFilename = {} ", originalFilename);
         String result = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
         return result;
     }
 
     private byte[] generateSmallAvatar(Path path) throws IOException {
+        logger.debug("Method generateSmallAvatar was called with path = {} ", path);
         try (
                 InputStream is = Files.newInputStream(path);
                 BufferedInputStream bis = new BufferedInputStream(is, 1024);
@@ -90,10 +97,12 @@ public class AvatarService {
     }
 
     public List<Avatar> findAvatars() {
+        logger.debug("Method findAvatars was called");
         return avatarRepository.findAll();
     }
 
     public List<Avatar> findAvatars(Integer pageNumber, Integer pageSize) {
+        logger.debug("Method findAvatars was called with pageNumber = {}, pageSize = {}", pageNumber, pageSize);
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }
