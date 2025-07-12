@@ -92,4 +92,13 @@ public class StudentService {
         logger.debug("Method getLastFiveStudents was called");
         return studentRepository.findFiveLastStudents();
     }
+
+    public synchronized Void printStudentNameSynchronized(Student student){
+        try {
+            System.out.println(student.getName());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 }

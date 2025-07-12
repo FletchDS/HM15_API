@@ -42,8 +42,56 @@ public class StudentController {
         return studentService.geAllStudents();
     }
 
+    @GetMapping("/print-parallel")
+    public ResponseEntity<Void> getStudentNamesParallel() {
+        List<Student> students = (List<Student>) studentService.geAllStudents();
+
+        try {
+            System.out.println(students.get(0).getName());
+            System.out.println(students.get(1).getName());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        }).start();
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/print-synchronized")
+    public ResponseEntity<Void> getStudentNamesSynchronized() {
+        List<Student> students = (List<Student>) studentService.geAllStudents();
+
+        try {
+            studentService.printStudentNameSynchronized(students.get(0));
+            studentService.printStudentNameSynchronized(students.get(1));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        new Thread(() -> {
+            studentService.printStudentNameSynchronized(students.get(2));
+            studentService.printStudentNameSynchronized(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            studentService.printStudentNameSynchronized(students.get(4));
+            studentService.printStudentNameSynchronized(students.get(5));
+        }).start();
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/starts-with-A")
-    public Collection<String> getStudentsNamesWithSpecifiedBeginning(){
+    public Collection<String> getStudentsNamesWithSpecifiedBeginning() {
         return studentService.getStudentsNamesWithSpecifiedBeginning();
     }
 
@@ -53,17 +101,17 @@ public class StudentController {
     }
 
     @GetMapping("count")
-    public Long getCountOfStudents(){
+    public Long getCountOfStudents() {
         return studentService.getCountOfStudents();
     }
 
     @GetMapping("average-age")
-    public Double getAverageAgeOfStudents(){
+    public Double getAverageAgeOfStudents() {
         return studentService.getAverageAgeOfStudents();
     }
 
     @GetMapping("last-five-students")
-    public List<Student> getLastFiveStudents(){
+    public List<Student> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
     }
 
