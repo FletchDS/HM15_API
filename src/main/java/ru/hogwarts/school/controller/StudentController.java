@@ -25,6 +25,11 @@ public class StudentController {
     }
 
     @GetMapping
+    public Collection<Student> getStudents() {
+        return studentService.geAllStudents();
+    }
+
+    @GetMapping("/by-age")
     public Collection<Student> getStudents(
             @RequestParam(name = "age", required = false) Integer age,
             @RequestParam(name = "to", required = false) Integer to) {
@@ -35,7 +40,11 @@ public class StudentController {
             return studentService.getAllStudentsOfSpecificAge(age);
         }
         return studentService.geAllStudents();
+    }
 
+    @GetMapping("/starts-with-A")
+    public Collection<String> getStudentsNamesWithSpecifiedBeginning(){
+        return studentService.getStudentsNamesWithSpecifiedBeginning();
     }
 
     @GetMapping("{id}/faculty")
