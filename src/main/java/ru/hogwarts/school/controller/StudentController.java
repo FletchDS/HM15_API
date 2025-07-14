@@ -26,7 +26,7 @@ public class StudentController {
 
     @GetMapping
     public Collection<Student> getStudents() {
-        return studentService.geAllStudents();
+        return studentService.getAllStudents();
     }
 
     @GetMapping("/by-age")
@@ -39,54 +39,18 @@ public class StudentController {
         if (age != null) {
             return studentService.getAllStudentsOfSpecificAge(age);
         }
-        return studentService.geAllStudents();
+        return studentService.getAllStudents();
     }
 
     @GetMapping("/print-parallel")
     public ResponseEntity<Void> getStudentNamesParallel() {
-        List<Student> students = (List<Student>) studentService.geAllStudents();
-
-        try {
-            System.out.println(students.get(0).getName());
-            System.out.println(students.get(1).getName());
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-        new Thread(() -> {
-            System.out.println(students.get(2).getName());
-            System.out.println(students.get(3).getName());
-        }).start();
-
-        new Thread(() -> {
-            System.out.println(students.get(4).getName());
-            System.out.println(students.get(5).getName());
-        }).start();
-
+        studentService.printStudentNamesParallel();
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/print-synchronized")
     public ResponseEntity<Void> getStudentNamesSynchronized() {
-        List<Student> students = (List<Student>) studentService.geAllStudents();
-
-        try {
-            studentService.printStudentNameSynchronized(students.get(0));
-            studentService.printStudentNameSynchronized(students.get(1));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-        new Thread(() -> {
-            studentService.printStudentNameSynchronized(students.get(2));
-            studentService.printStudentNameSynchronized(students.get(3));
-        }).start();
-
-        new Thread(() -> {
-            studentService.printStudentNameSynchronized(students.get(4));
-            studentService.printStudentNameSynchronized(students.get(5));
-        }).start();
-
+        studentService.printStudentNamesSynchronized();
         return ResponseEntity.ok().build();
     }
 
