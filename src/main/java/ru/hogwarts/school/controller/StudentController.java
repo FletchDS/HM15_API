@@ -26,7 +26,7 @@ public class StudentController {
 
     @GetMapping
     public Collection<Student> getStudents() {
-        return studentService.geAllStudents();
+        return studentService.getAllStudents();
     }
 
     @GetMapping("/by-age")
@@ -39,11 +39,23 @@ public class StudentController {
         if (age != null) {
             return studentService.getAllStudentsOfSpecificAge(age);
         }
-        return studentService.geAllStudents();
+        return studentService.getAllStudents();
+    }
+
+    @GetMapping("/print-parallel")
+    public ResponseEntity<Void> getStudentNamesParallel() {
+        studentService.printStudentNamesParallel();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/print-synchronized")
+    public ResponseEntity<Void> getStudentNamesSynchronized() {
+        studentService.printStudentNamesSynchronized();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/starts-with-A")
-    public Collection<String> getStudentsNamesWithSpecifiedBeginning(){
+    public Collection<String> getStudentsNamesWithSpecifiedBeginning() {
         return studentService.getStudentsNamesWithSpecifiedBeginning();
     }
 
@@ -53,17 +65,17 @@ public class StudentController {
     }
 
     @GetMapping("count")
-    public Long getCountOfStudents(){
+    public Long getCountOfStudents() {
         return studentService.getCountOfStudents();
     }
 
     @GetMapping("average-age")
-    public Double getAverageAgeOfStudents(){
+    public Double getAverageAgeOfStudents() {
         return studentService.getAverageAgeOfStudents();
     }
 
     @GetMapping("last-five-students")
-    public List<Student> getLastFiveStudents(){
+    public List<Student> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
     }
 

@@ -2,6 +2,7 @@ package ru.hogwarts.school.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -64,9 +65,55 @@ public class StudentService {
                 .toList();
     }
 
-    public Collection<Student> geAllStudents() {
+    public Collection<Student> getAllStudents() {
         logger.debug("Method geAllStudents was called");
         return studentRepository.findAll();
+    }
+
+    public Void printStudentNamesSynchronized(){
+        List<Student> students = (List<Student>) getAllStudents();
+
+        try {
+            printStudentNameSynchronized(students.get(0));
+            printStudentNameSynchronized(students.get(1));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        new Thread(() -> {
+            printStudentNameSynchronized(students.get(2));
+            printStudentNameSynchronized(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            printStudentNameSynchronized(students.get(4));
+            printStudentNameSynchronized(students.get(5));
+        }).start();
+
+        return null;
+    }
+
+    public Void printStudentNamesParallel(){
+        List<Student> students = (List<Student>) getAllStudents();
+
+        try {
+            System.out.println(students.get(0).getName());
+            System.out.println(students.get(1).getName());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        }).start();
+
+        return null;
     }
 
     public Faculty getFacultyOfStudent(Long id) {
@@ -91,5 +138,14 @@ public class StudentService {
     public List<Student> getLastFiveStudents() {
         logger.debug("Method getLastFiveStudents was called");
         return studentRepository.findFiveLastStudents();
+    }
+
+    public synchronized Void printStudentNameSynchronized(Student student){
+        try {
+            System.out.println(student.getName());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
     }
 }
